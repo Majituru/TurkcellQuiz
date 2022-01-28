@@ -7,9 +7,13 @@ using TMPro;
 
 public class QuizManager : MonoBehaviour
 {
+    public TextAsset textAssetData;
+
     public List<QuestionsAndAnswers> QnA;
+    public List<QuestionsAndAnswers> QnAExcel;
     public GameObject[] options;
     public int currentQuestion;
+    public int tableSize;
 
     public GameObject QuizPanel;
     public GameObject GOPanel;
@@ -27,7 +31,36 @@ public class QuizManager : MonoBehaviour
     {
         totalQuestion = QnA.Count;
         GOPanel.SetActive(false);
+        //ReadQnAExcel();
         generateQuestion();
+        
+    }
+
+    public void ReadQnAExcel()
+    {
+        string[] data = textAssetData.text.Split(new string[] { ",", "/n" }, System.StringSplitOptions.None);
+
+        tableSize = ((data.Length - 1) / 7) - 1;
+
+        /*Debug.Log(tableSize);
+        Debug.Log(data.Length);
+
+        Debug.Log(data[7 * (0 + 1) + 5]);
+        Debug.Log(data[7 * (1 + 1) + 5]);
+        Debug.Log(data[7 * (2 + 1) + 5]);*/
+
+        //QnAExcel = new List<QuestionsAndAnswers>[tableSize];
+        //QnAExcel.Capacity = tableSize;
+
+        for (int i = 0; i < tableSize; i++)
+        {
+            QnAExcel[i].Question = data[7* (i+1)];
+            QnAExcel[i].Answers[0] = data[7 * (i + 1) + 1];
+            QnAExcel[i].Answers[1] = data[7 * (i + 1) + 2];
+            QnAExcel[i].Answers[2] = data[7 * (i + 1) + 3];
+            QnAExcel[i].Answers[3] = data[7 * (i + 1) + 4];
+            QnAExcel[i].CorrectAnswer = int.Parse(data[7 * (i + 1) + 5]);
+        }
     }
 
     public void Retry()
@@ -45,14 +78,16 @@ public class QuizManager : MonoBehaviour
     public void correct()
     {
         score += 1;
-        QnA.RemoveAt(currentQuestion);
+        //QnA.RemoveAt(currentQuestion);
+        QnAExcel.RemoveAt(currentQuestion);
         StartCoroutine(TransitionToNextQuestion());
     }
 
     public void wrong()
     {
         //when you answer wrong
-        QnA.RemoveAt(currentQuestion);
+        //QnA.RemoveAt(currentQuestion);
+        QnAExcel.RemoveAt(currentQuestion);
         StartCoroutine(TransitionToNextQuestion());
     }
 
@@ -61,10 +96,17 @@ public class QuizManager : MonoBehaviour
         for (int i = 0; i<options.Length;i++)
         {
             options[i].GetComponent<AnswerScript>().isCorrect = false;
-            options[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = QnA[currentQuestion].Answers[i];
+            //options[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = QnA[currentQuestion].Answers[i];
+            options[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = QnAExcel[currentQuestion].Answers[i];
+
             options[i].GetComponent<AnswerScript>().GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
 
-            if (QnA[currentQuestion].CorrectAnswer == i + 1)
+            /*if (QnA[currentQuestion].CorrectAnswer == i + 1)
+            {
+                options[i].GetComponent<AnswerScript>().isCorrect = true;
+            }*/
+
+            if (QnAExcel[currentQuestion].CorrectAnswer == i + 1)
             {
                 options[i].GetComponent<AnswerScript>().isCorrect = true;
             }
@@ -79,11 +121,28 @@ public class QuizManager : MonoBehaviour
 
     void generateQuestion()
     {
-        if(QnA.Count>0)
+        /*if(QnA.Count>0)
         {
             currentQuestion = Random.Range(0, QnA.Count);
+            
 
             QuestionText.text = QnA[currentQuestion].Question;
+            
+            SetAnswers();
+
+        }
+        else
+        {
+            Debug.Log("Out of Question");
+            GameOver();
+        }*/
+
+        if (tableSize > 0)
+        {
+            currentQuestion = Random.Range(0, tableSize);
+
+            QuestionText.text = QnAExcel[currentQuestion].Question;
+
             SetAnswers();
 
         }
@@ -92,7 +151,7 @@ public class QuizManager : MonoBehaviour
             Debug.Log("Out of Question");
             GameOver();
         }
-       
+
 
     }
 }

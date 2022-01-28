@@ -2107,6 +2107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e6dea551f3f5546b8df02137167056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textAssetData: {fileID: 4900000, guid: ff44b121abedb86489e970e5d462e3a0, type: 3}
   QnA:
   - Question: 2+2?
     Answers:
@@ -2136,12 +2137,14 @@ MonoBehaviour:
     - You Need To Improve Yourself
     - Meh
     CorrectAnswer: 3
+  QnAExcel: []
   options:
   - {fileID: 468135493}
   - {fileID: 642476610}
   - {fileID: 465250000}
   - {fileID: 1345213544}
   currentQuestion: 0
+  tableSize: 0
   QuizPanel: {fileID: 1001631179}
   GOPanel: {fileID: 129007460}
   QuestionText: {fileID: 765795877}
