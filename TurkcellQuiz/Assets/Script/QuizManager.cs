@@ -54,12 +54,12 @@ public class QuizManager : MonoBehaviour
 
         for (int i = 0; i < tableSize; i++)
         {
-            QnAExcel[i].Question = data[7* (i+1)];
-            QnAExcel[i].Answers[0] = data[7 * (i + 1) + 1];
-            QnAExcel[i].Answers[1] = data[7 * (i + 1) + 2];
-            QnAExcel[i].Answers[2] = data[7 * (i + 1) + 3];
-            QnAExcel[i].Answers[3] = data[7 * (i + 1) + 4];
-            QnAExcel[i].CorrectAnswer = int.Parse(data[7 * (i + 1) + 5]);
+            QnA[i].Question = data[7* (i+1)];
+            QnA[i].Answers[0] = data[7 * (i + 1) + 1];
+            QnA[i].Answers[1] = data[7 * (i + 1) + 2];
+            QnA[i].Answers[2] = data[7 * (i + 1) + 3];
+            QnA[i].Answers[3] = data[7 * (i + 1) + 4];
+            QnA[i].CorrectAnswer = int.Parse(data[7 * (i + 1) + 5]);
         }
     }
 
@@ -79,7 +79,7 @@ public class QuizManager : MonoBehaviour
     {
         score += 1;
         //QnA.RemoveAt(currentQuestion);
-        QnAExcel.RemoveAt(currentQuestion);
+        QnA.RemoveAt(currentQuestion);
         StartCoroutine(TransitionToNextQuestion());
     }
 
@@ -87,7 +87,7 @@ public class QuizManager : MonoBehaviour
     {
         //when you answer wrong
         //QnA.RemoveAt(currentQuestion);
-        QnAExcel.RemoveAt(currentQuestion);
+        QnA.RemoveAt(currentQuestion);
         StartCoroutine(TransitionToNextQuestion());
     }
 
@@ -97,7 +97,7 @@ public class QuizManager : MonoBehaviour
         {
             options[i].GetComponent<AnswerScript>().isCorrect = false;
             //options[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = QnA[currentQuestion].Answers[i];
-            options[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = QnAExcel[currentQuestion].Answers[i];
+            options[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = QnA[currentQuestion].Answers[i];
 
             options[i].GetComponent<AnswerScript>().GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
 
@@ -106,7 +106,7 @@ public class QuizManager : MonoBehaviour
                 options[i].GetComponent<AnswerScript>().isCorrect = true;
             }*/
 
-            if (QnAExcel[currentQuestion].CorrectAnswer == i + 1)
+            if (QnA[currentQuestion].CorrectAnswer == i + 1)
             {
                 options[i].GetComponent<AnswerScript>().isCorrect = true;
             }
@@ -121,7 +121,7 @@ public class QuizManager : MonoBehaviour
 
     void generateQuestion()
     {
-        /*if(QnA.Count>0)
+        if(QnA.Count>0)
         {
             currentQuestion = Random.Range(0, QnA.Count);
             
@@ -135,13 +135,13 @@ public class QuizManager : MonoBehaviour
         {
             Debug.Log("Out of Question");
             GameOver();
-        }*/
+        }
 
-        if (tableSize > 0)
+        /*if (tableSize > 0)
         {
             currentQuestion = Random.Range(0, tableSize);
 
-            QuestionText.text = QnAExcel[currentQuestion].Question;
+            QuestionText.text = QnA[currentQuestion].Question;
 
             SetAnswers();
 
@@ -150,7 +150,7 @@ public class QuizManager : MonoBehaviour
         {
             Debug.Log("Out of Question");
             GameOver();
-        }
+        }*/
 
 
     }
